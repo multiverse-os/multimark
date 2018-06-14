@@ -1,19 +1,4 @@
-//
-// Blackfriday Markdown Processor
-// Available at http://github.com/russross/blackfriday
-//
-// Copyright © 2011 Russ Ross <russ@russross.com>.
-// Distributed under the Simplified BSD License.
-// See README.md for details.
-//
-
-//
-//
-// HTML rendering backend
-//
-//
-
-package blackfriday
+package markdown
 
 import (
 	"bytes"
@@ -28,24 +13,32 @@ type HTMLFlags int
 
 // HTML renderer configuration options.
 const (
-	HTMLFlagsNone           HTMLFlags = 0
-	SkipHTML                HTMLFlags = 1 << iota // Skip preformatted HTML blocks
-	SkipImages                                    // Skip embedded images
-	SkipLinks                                     // Skip all links
-	Safelink                                      // Only link to trusted protocols
-	NofollowLinks                                 // Only link with rel="nofollow"
-	NoreferrerLinks                               // Only link with rel="noreferrer"
-	HrefTargetBlank                               // Add a blank target
-	CompletePage                                  // Generate a complete HTML page
-	UseXHTML                                      // Generate XHTML output instead of HTML
-	FootnoteReturnLinks                           // Generate a link at the end of a footnote to return to the source
-	Smartypants                                   // Enable smart punctuation substitutions
-	SmartypantsFractions                          // Enable smart fractions (with Smartypants)
-	SmartypantsDashes                             // Enable smart dashes (with Smartypants)
-	SmartypantsLatexDashes                        // Enable LaTeX-style dashes (with Smartypants)
-	SmartypantsAngledQuotes                       // Enable angled double quotes (with Smartypants) for double quotes rendering
-	SmartypantsQuotesNBSP                         // Enable « French guillemets » (with Smartypants)
-	TOC                                           // Generate a table of contents
+	HTMLFlagsNone       HTMLFlags = 0
+	SkipHTML            HTMLFlags = 1 << iota // Skip preformatted HTML blocks
+	SkipImages                                // Skip embedded images
+	SkipLinks                                 // Skip all links
+	Safelink                                  // Only link to trusted protocols
+	NofollowLinks                             // Only link with rel="nofollow"
+	NoreferrerLinks                           // Only link with rel="noreferrer"
+	HrefTargetBlank                           // Add a blank target
+	CompletePage                              // Generate a complete HTML page
+	UseXHTML                                  // Generate XHTML output instead of HTML
+	FootnoteReturnLinks                       // Generate a link at the end of a footnote to return to the source
+	Multiverse
+	MultiverseFractions    // Enable smart fractions (with Smartypants)
+	MultiverseDashes       // Enable smart dashes (with Smartypants)
+	MultiverseLatexDashes  // Enable LaTeX-style dashes (with Smartypants)
+	MultiverseAngledQuotes // Enable angled double quotes (with Smartypants) for double quotes rendering
+	MultiverseQuotesNBSP   // Enable « French guillemets » (with Smartypants)
+	MultiverseMath         // Enable Complex Math
+	MultiverseCitation     // Enable academic quality citations
+	MultiverseTags
+	MultiverseDescription
+	MultiverseFilebrowser
+	MultiverseLinkedBlock
+	MultiverseGraphBlock
+	MultiverseChartTable
+	TOC // Generate a table of contents
 )
 
 var (

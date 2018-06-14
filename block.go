@@ -1,17 +1,4 @@
-//
-// Blackfriday Markdown Processor
-// Available at http://github.com/russross/blackfriday
-//
-// Copyright © 2011 Russ Ross <russ@russross.com>.
-// Distributed under the Simplified BSD License.
-// See README.md for details.
-//
-
-//
-// Functions to parse block-level elements.
-//
-
-package blackfriday
+package markdown
 
 import (
 	"bytes"
@@ -115,6 +102,18 @@ func (p *Markdown) block(data []byte) {
 				continue
 			}
 		}
+
+		// TODO: Add LinkedBlock
+		// Linked block, is Remote/Local URL/Path and StartLine + EndLine. So automatically
+		// updating linked chunks of content sync automatically
+
+		// TODO: Real Footer Citations, support citation output in one of several official formats
+
+		// TODO: Graphviz
+
+		// TODO: Table of data renders charts: Pie, Bar, and other basics
+
+		// TODO: All images, remote or local, should be converetd to base64 and embedded
 
 		// horizontal rule:
 		//

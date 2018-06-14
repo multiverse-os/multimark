@@ -1,4 +1,4 @@
-package blackfriday
+package markdown
 
 import (
 	"bytes"
@@ -94,6 +94,50 @@ type CodeBlockData struct {
 	FenceChar   byte
 	FenceLength int
 	FenceOffset int
+}
+
+type LinkedBlockData struct {
+	URL       string
+	StartLine int
+	EndLine   int
+}
+
+type GraphBlockData struct {
+	GraphvizSource string
+	ImageData      []byte
+}
+
+type ChartTableData struct {
+	ChartData [][]int
+	ChartType string
+	Colors    []string
+}
+
+type EmbeddedImageData struct {
+	ImageData []byte
+	URL       string
+	AltText   string
+	Name      string
+	Extension string
+}
+
+type CitationBlockData struct {
+	URL     string
+	Title   string
+	Year    int
+	Authors []string
+	DOI     string
+}
+
+type EmbeddedCitationData struct {
+	// TODO: Covert all pages to epub, all pdfs to epub, etc
+	EpubData    []byte
+	URL         string
+	Authors     []string
+	DOI         string
+	Description string
+	Title       string
+	Year        int
 }
 
 // TableCellData contains fields relevant to a TableCell node type.

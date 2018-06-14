@@ -1,11 +1,4 @@
-// Blackfriday Markdown Processor
-// Available at http://github.com/russross/blackfriday
-//
-// Copyright © 2011 Russ Ross <russ@russross.com>.
-// Distributed under the Simplified BSD License.
-// See README.md for details.
-
-package blackfriday
+package markdown
 
 import (
 	"bytes"
@@ -21,7 +14,18 @@ import (
 
 // Version string of the package. Appears in the rendered document when
 // CompletePage flag is on.
-const Version = "2.0"
+
+type Version struct {
+	Major int
+	Minor int
+	Patch int
+}
+
+func (self Version) String() string {
+	return fmt.Sprintf("%v.%v.%v", self.Major, self.Minor, self.Patch)
+}
+
+const Version = Version{Major: 0, Minor: 1, Patch: 0}
 
 // Extensions is a bitwise or'ed collection of enabled Blackfriday's
 // extensions.
@@ -46,10 +50,21 @@ const (
 	Titleblock                                    // Titleblock ala pandoc
 	AutoHeadingIDs                                // Create the heading ID from the text
 	BackslashLineBreak                            // Translate trailing backslashes into line breaks
-	DefinitionLists                               // Render definition lists
+	DefinitionLists                               // Render definition list
+	LinkedBlocks                                  // Multiverse content linking
+	CitationBlock                                 // Multiverse academic quality citations
+	EmbedImages                                   // Multiverse Embed Images
+	EmbedCitations                                // Copy epubs for DOI, or snapshot webpage to ensure the reference is kept alive and maintained if changed later
+	GraphBlocks                                   // Multiverse graphviz support
+	ChartTables                                   // Multiverse tables that render charts: pie, bar, line, scatter, and other basic charts
+	MathBlocks                                    // Multiverse pure CSS rendering of math equations
 
 	CommonHTMLFlags HTMLFlags = UseXHTML | Smartypants |
 		SmartypantsFractions | SmartypantsDashes | SmartypantsLatexDashes
+
+	AllExtensions Extensions = NoIntraEmphasis | Tables | FencedCode |
+		Autolink | Strikethrough | SpaceHeadings | HardLineBreak | Footnotes |
+		HeadingIDs | Titleblock | AutoHeadingIDs | BackslashLineBreak | DefinitionLists
 
 	CommonExtensions Extensions = NoIntraEmphasis | Tables | FencedCode |
 		Autolink | Strikethrough | SpaceHeadings | HeadingIDs |
@@ -86,12 +101,14 @@ const (
 
 // The size of a tab stop.
 const (
-	TabSizeDefault = 4
-	TabSizeDouble  = 8
+	TabSizeDefault = 2
+	TabSizeDouble  = 4
 )
 
 // blockTags is a set of tags that are recognized as HTML block tags.
 // Any of these can be included in markdown text without special escaping.
+// TODO: Missing <span> tags
+// TODO: No iframes
 var blockTags = map[string]struct{}{
 	"blockquote": struct{}{},
 	"del":        struct{}{},
@@ -105,6 +122,9 @@ var blockTags = map[string]struct{}{
 	"h4":         struct{}{},
 	"h5":         struct{}{},
 	"h6":         struct{}{},
+	"span":       struct{}{},
+	"strong":     struct{}{},
+	"em":         struct{}{},
 	"iframe":     struct{}{},
 	"ins":        struct{}{},
 	"math":       struct{}{},
