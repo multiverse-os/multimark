@@ -401,7 +401,7 @@ var (
 	ttCloseTag         = []byte("</tt>")
 	aTag               = []byte("<a")
 	aCloseTag          = []byte("</a>")
-	preTag             = []byte("<pre>")
+	preTag             = []byte("<pre class='code'>")
 	preCloseTag        = []byte("</pre>")
 	codeTag            = []byte("<code>")
 	codeCloseTag       = []byte("</code>")
