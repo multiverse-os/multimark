@@ -106,6 +106,7 @@ func (p *Markdown) block(data []byte) {
 		// TODO: Add LinkedBlock
 		// Linked block, is Remote/Local URL/Path and StartLine + EndLine. So automatically
 		// updating linked chunks of content sync automatically
+		//if p.extensions&LinkedBlock
 
 		// TODO: Real Footer Citations, support citation output in one of several official formats
 
