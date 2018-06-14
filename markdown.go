@@ -25,7 +25,7 @@ func (self Version) String() string {
 	return fmt.Sprintf("%v.%v.%v", self.Major, self.Minor, self.Patch)
 }
 
-const Version = Version{Major: 0, Minor: 1, Patch: 0}
+var MarkdownVersion = Version{Major: 0, Minor: 1, Patch: 0}
 
 // Extensions is a bitwise or'ed collection of enabled Blackfriday's
 // extensions.
@@ -59,8 +59,7 @@ const (
 	ChartTables                                   // Multiverse tables that render charts: pie, bar, line, scatter, and other basic charts
 	MathBlocks                                    // Multiverse pure CSS rendering of math equations
 
-	CommonHTMLFlags HTMLFlags = UseXHTML | Smartypants |
-		SmartypantsFractions | SmartypantsDashes | SmartypantsLatexDashes
+	CommonHTMLFlags HTMLFlags = UseXHTML | MultiverseFractions | MultiverseDashes | MultiverseLatexDashes
 
 	AllExtensions Extensions = NoIntraEmphasis | Tables | FencedCode |
 		Autolink | Strikethrough | SpaceHeadings | HardLineBreak | Footnotes |

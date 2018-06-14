@@ -102,7 +102,7 @@ type HTMLRenderer struct {
 	lastOutputLen int
 	disableTags   int
 
-	sr *SPRenderer
+	mvr *MultiverseRenderer
 }
 
 const (
@@ -129,7 +129,7 @@ func NewHTMLRenderer(params HTMLRendererParameters) *HTMLRenderer {
 		closeTag:   closeTag,
 		headingIDs: make(map[string]int),
 
-		sr: NewSmartypantsRenderer(params.Flags),
+		mvr: NewMultiverseRenderer(params.Flags),
 	}
 }
 
@@ -491,10 +491,10 @@ func (r *HTMLRenderer) RenderNode(w io.Writer, node *Node, entering bool) WalkSt
 	attrs := []string{}
 	switch node.Type {
 	case Text:
-		if r.Flags&Smartypants != 0 {
+		if r.Flags&Multiverse != 0 {
 			var tmp bytes.Buffer
 			escapeHTML(&tmp, node.Literal)
-			r.sr.Process(w, tmp.Bytes())
+			r.mvr.Process(w, tmp.Bytes())
 		} else {
 			if node.Parent.Type == Link {
 				escLink(w, node.Literal)
@@ -846,14 +846,14 @@ func (r *HTMLRenderer) writeDocumentHeader(w io.Writer) {
 	}
 	io.WriteString(w, "<head>\n")
 	io.WriteString(w, "  <title>")
-	if r.Flags&Smartypants != 0 {
-		r.sr.Process(w, []byte(r.Title))
+	if r.Flags&Multiverse != 0 {
+		r.mvr.Process(w, []byte(r.Title))
 	} else {
 		escapeHTML(w, []byte(r.Title))
 	}
 	io.WriteString(w, "</title>\n")
 	io.WriteString(w, "  <meta name=\"GENERATOR\" content=\"Blackfriday Markdown Processor v")
-	io.WriteString(w, Version)
+	io.WriteString(w, MarkdownVersion.String())
 	io.WriteString(w, "\"")
 	io.WriteString(w, ending)
 	io.WriteString(w, ">\n")

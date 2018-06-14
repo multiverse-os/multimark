@@ -2,6 +2,7 @@ package markdown
 
 import (
 	"bytes"
+	"fmt"
 	"html"
 	"regexp"
 
@@ -106,7 +107,12 @@ func (p *Markdown) block(data []byte) {
 		// TODO: Add LinkedBlock
 		// Linked block, is Remote/Local URL/Path and StartLine + EndLine. So automatically
 		// updating linked chunks of content sync automatically
-		//if p.extensions&LinkedBlock
+		if p.extensions&LinkedBlocks != 0 {
+			if i := p.fencedCodeBlock(data, true); i > 0 {
+				data = data[i:]
+				continue
+			}
+		}
 
 		// TODO: Real Footer Citations, support citation output in one of several official formats
 
@@ -662,6 +668,11 @@ func isFenceLine(data []byte, syntax *string, oldmarker string) (end int, marker
 		return 0, ""
 	}
 	return i + 1, marker // Take newline into account.
+}
+
+func (p *Markdown) linkedContentBlock(data []byte, doRender bool) int {
+	fmt.Println("Not yet implemented")
+	return 0
 }
 
 // fencedCodeBlock returns the end index if data contains a fenced code block at the beginning,
